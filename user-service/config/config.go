@@ -10,9 +10,19 @@ type Server struct {
 	Port string
 }
 
+type Database struct {
+	Host     string
+	Port     string
+	User     string
+	Password string
+	Name     string
+}
+
 type Config struct {
 	Server   Server
 	LogLevel logrus.Level
+	Database Database
+	Verison  Verison
 }
 
 func (s Server) GetPort() string {
@@ -25,5 +35,13 @@ func initConfig() (*Config, error) {
 			Port: "3000",
 		},
 		LogLevel: logrus.DebugLevel,
+		Database: Database{
+			Host:     "127.0.0.1",
+			Port:     "5432",
+			User:     "postgres",
+			Password: "postgres",
+			Name:     "building_with_golang",
+		},
+		Verison: V1,
 	}, nil
 }
