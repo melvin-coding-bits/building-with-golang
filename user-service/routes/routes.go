@@ -20,7 +20,9 @@ func InitRoutes(ctx *config.AppContext, app *fiber.App) {
 		return c.Next()
 	})
 
+	versionedRouter.Get("/user", GetAllUsers)
 	versionedRouter.Get("/user/:userId", GetUserDetails)
 	versionedRouter.Put("/user", CreateUser)
+	versionedRouter.Post("/user", UpdateUser)
 
 }
