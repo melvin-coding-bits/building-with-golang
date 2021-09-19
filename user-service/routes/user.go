@@ -10,7 +10,13 @@ import (
 	"github.com/melvinodsa/build-with-golang/user-service/helper/db"
 )
 
+//GetUserDetails returns the details of a user for a given user id
 func GetUserDetails(c *fiber.Ctx) error {
+	/*
+	 * We will get the user context
+	 * We will get the user id from the request
+	 * We will get the user details from the db
+	 */
 	ctx, ok := c.UserContext().Value(config.AppContextKey{}).(*config.AppContext)
 	if !ok {
 		return c.JSON(dto.Error(errors.New("context not found"), http.StatusInternalServerError))
@@ -28,7 +34,12 @@ func GetUserDetails(c *fiber.Ctx) error {
 	return c.JSON(dto.Success(dto.FromUserModel(user)))
 }
 
+//GetAllUsers returns all the users
 func GetAllUsers(c *fiber.Ctx) error {
+	/*
+	 * We will get the user context
+	 * We will get all the users from the db
+	 */
 	ctx, ok := c.UserContext().Value(config.AppContextKey{}).(*config.AppContext)
 	if !ok {
 		return c.JSON(dto.Error(errors.New("context not found"), http.StatusInternalServerError))
@@ -42,7 +53,13 @@ func GetAllUsers(c *fiber.Ctx) error {
 	return c.JSON(dto.Success(dto.FromUserModels(users)))
 }
 
+//CreateUser creates a new user in db
 func CreateUser(c *fiber.Ctx) error {
+	/*
+	 * We will get the user context
+	 * We will get the user payload to be created
+	 * We will create the user in the db
+	 */
 	ctx, ok := c.UserContext().Value(config.AppContextKey{}).(*config.AppContext)
 	if !ok {
 		return c.JSON(dto.Error(errors.New("context not found"), http.StatusInternalServerError))
@@ -60,7 +77,13 @@ func CreateUser(c *fiber.Ctx) error {
 	return c.JSON(dto.Success(dto.FromUserModel(user)))
 }
 
+//UpdateUser updates a user in db
 func UpdateUser(c *fiber.Ctx) error {
+	/*
+	 * We will get the user context
+	 * We will get the user payload to be update
+	 * We will update the user in the db
+	 */
 	ctx, ok := c.UserContext().Value(config.AppContextKey{}).(*config.AppContext)
 	if !ok {
 		return c.JSON(dto.Error(errors.New("context not found"), http.StatusInternalServerError))

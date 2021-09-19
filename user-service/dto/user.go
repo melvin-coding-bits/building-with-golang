@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 )
 
+//User dto to interact with api
 type User struct {
 	ID    uint        `json:"id"`
 	Role  models.Role `json:"role"`
@@ -12,6 +13,7 @@ type User struct {
 	Email string      `json:"email"`
 }
 
+//GetModel returns the user model from dto
 func (u User) GetModel() *models.User {
 	return &models.User{
 		Model: gorm.Model{ID: u.ID},
@@ -21,6 +23,7 @@ func (u User) GetModel() *models.User {
 	}
 }
 
+//FromUserModel returns the user dto from user model
 func FromUserModel(user *models.User) *User {
 	return &User{
 		ID:    user.ID,
@@ -30,6 +33,7 @@ func FromUserModel(user *models.User) *User {
 	}
 }
 
+//FromUserModel returns the list of user dto from user model list
 func FromUserModels(users []models.User) []User {
 	result := make([]User, len(users))
 	for i, user := range users {

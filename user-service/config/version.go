@@ -1,5 +1,6 @@
 package config
 
+//Version of the api endpoints
 type Verison string
 
 func (v Verison) String() string {
@@ -7,5 +8,6 @@ func (v Verison) String() string {
 }
 
 const (
+	//V1 is the first version of the api server
 	V1 Verison = "v1"
 )
