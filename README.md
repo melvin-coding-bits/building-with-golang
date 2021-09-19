@@ -6,4 +6,8 @@ This is the code corresponding to a video series, where I try to build a bunch o
 
 ## Services that are currently available
 * User Service
+* API Gateway
 * Datastore - *Postgres*
+
+## Documentation
+Documentation can be found at the [Postman Collection](https://documenter.getpostman.com/view/906622/UUxtEAK7)
