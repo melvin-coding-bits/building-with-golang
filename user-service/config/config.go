@@ -4,6 +4,7 @@ package config
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/sirupsen/logrus"
 )
@@ -52,11 +53,11 @@ func initConfig() (*Config, error) {
 		},
 		LogLevel: logrus.DebugLevel,
 		Database: Database{
-			Host:     "127.0.0.1",
-			Port:     "5432",
-			User:     "postgres",
-			Password: "postgres",
-			Name:     "building_with_golang",
+			Host:     os.Getenv("DB_HOST"),
+			Port:     os.Getenv("DB_PORT"),
+			User:     os.Getenv("DB_USER"),
+			Password: os.Getenv("DB_PASSWORD"),
+			Name:     os.Getenv("DB_NAME"),
 		},
 		Verison: V1,
 	}, nil

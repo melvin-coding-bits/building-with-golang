@@ -36,7 +36,7 @@ func initDatabase(cnf Config, logger *logrus.Logger) (*gorm.DB, error) {
 	 * Do model migration
 	 */
 	//open the connection
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable", cnf.Database.Host, cnf.Database.User, cnf.Database.Password, cnf.Database.Name, cnf.Database.Port)
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=require", cnf.Database.Host, cnf.Database.User, cnf.Database.Password, cnf.Database.Name, cnf.Database.Port)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		logger.Error("error connecting to database")
