@@ -9,7 +9,7 @@ pipeline {
     stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build(registry + ":$BUILD_NUMBER", "-f user-service/Dockerfile user-service")
+          dockerImage = docker.build(registry, "-f user-service/Dockerfile user-service")
         }
       }
     }
