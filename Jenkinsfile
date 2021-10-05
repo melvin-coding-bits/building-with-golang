@@ -5,12 +5,12 @@ pipeline {
     dockerImage = ''
   }
   agent any
-  stage('Cloning Git') {
-  steps {
-      git 'https://github.com/melvin-coding-bits/building-with-golang.git'
-    }
-  }
   stages {
+    stage('Cloning Git') {
+    steps {
+        git 'https://github.com/melvin-coding-bits/building-with-golang.git'
+      }
+    }
     stage('Building image') {
       steps{
         script {
