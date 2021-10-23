@@ -68,6 +68,9 @@ func CreateUser(c *fiber.Ctx) error {
 	if err := c.BodyParser(u); err != nil {
 		return c.JSON(dto.Error(err, http.StatusBadRequest))
 	}
+	if err := u.Validate(); err != nil {
+		return c.JSON(dto.Error(err, http.StatusBadRequest))
+	}
 
 	user := u.GetModel()
 	err := db.CreateUser(ctx, user)
