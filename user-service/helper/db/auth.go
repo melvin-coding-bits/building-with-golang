@@ -8,6 +8,7 @@ import (
 	"github.com/melvinodsa/build-with-golang/user-service/models"
 )
 
+//CheckPassword checks if the given email and password matches or not
 func CheckPassword(ctx *config.AppContext, email, password string) (*models.User, error) {
 	hashedPass := sha256.Sum256([]byte(password))
 	user := &models.User{}

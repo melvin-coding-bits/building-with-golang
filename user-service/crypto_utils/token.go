@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 )
 
+//GenerateToken generates a random token
 func GenerateToken(length uint) (string, error) {
 	b := make([]byte, length)
 	_, err := rand.Read(b)

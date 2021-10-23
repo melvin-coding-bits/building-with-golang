@@ -11,7 +11,14 @@ import (
 	"github.com/melvinodsa/build-with-golang/user-service/helper/db"
 )
 
+//Login logs the user into the system
 func Login(c *fiber.Ctx) error {
+	/*
+	 * We will get the user context
+	 * We will get the auth payload to be checked
+	 * We will validate the user email and password
+	 * We will generate the token and set as auth token
+	 */
 	ctx, ok := c.UserContext().Value(config.AppContextKey{}).(*config.AppContext)
 	if !ok {
 		return c.JSON(dto.Error(errors.New("context not found"), http.StatusInternalServerError))
