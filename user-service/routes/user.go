@@ -8,7 +8,14 @@ import (
 	"github.com/melvinodsa/build-with-golang/user-service/config"
 	"github.com/melvinodsa/build-with-golang/user-service/dto"
 	"github.com/melvinodsa/build-with-golang/user-service/helper/db"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 )
+
+var payloadParsingError = promauto.NewCounter(prometheus.CounterOpts{
+	Name: "payload_parsing_error",
+	Help: "Errors while parsing the payload",
+})
 
 //GetUserDetails returns the details of a user for a given user id
 func GetUserDetails(c *fiber.Ctx) error {
@@ -23,6 +30,7 @@ func GetUserDetails(c *fiber.Ctx) error {
 	}
 	userId, err := c.ParamsInt("userId")
 	if err != nil {
+		payloadParsingError.Inc()
 		return c.JSON(dto.Error(err, http.StatusBadRequest))
 	}
 
@@ -68,6 +76,7 @@ func CreateUser(c *fiber.Ctx) error {
 
 	u := &dto.User{}
 	if err := c.BodyParser(u); err != nil {
+		payloadParsingError.Inc()
 		return c.JSON(dto.Error(err, http.StatusBadRequest))
 	}
 
@@ -96,6 +105,7 @@ func UpdateUser(c *fiber.Ctx) error {
 	}
 	u := &dto.User{}
 	if err := c.BodyParser(u); err != nil {
+		payloadParsingError.Inc()
 		return c.JSON(dto.Error(err, http.StatusBadRequest))
 	}
 

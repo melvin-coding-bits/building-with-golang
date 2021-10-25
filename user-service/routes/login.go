@@ -9,7 +9,14 @@ import (
 	"github.com/melvinodsa/build-with-golang/user-service/crypto_utils"
 	"github.com/melvinodsa/build-with-golang/user-service/dto"
 	"github.com/melvinodsa/build-with-golang/user-service/helper/db"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 )
+
+var loggedInUsersCount = promauto.NewCounter(prometheus.CounterOpts{
+	Name: "logged_in_users",
+	Help: "No. of logged in users",
+})
 
 //Login logs the user into the system
 func Login(c *fiber.Ctx) error {
@@ -25,6 +32,7 @@ func Login(c *fiber.Ctx) error {
 	}
 	a := &dto.Auth{}
 	if err := c.BodyParser(a); err != nil {
+		payloadParsingError.Inc()
 		return c.JSON(dto.Error(err, http.StatusBadRequest))
 	}
 
@@ -38,6 +46,7 @@ func Login(c *fiber.Ctx) error {
 		return c.JSON(dto.Error(err, http.StatusInternalServerError))
 	}
 	c.Response().Header.Set("Authorization", "Bearer "+token)
+	loggedInUsersCount.Inc()
 
 	return c.JSON(dto.Success(dto.FromUserModel(user)))
 }

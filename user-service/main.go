@@ -3,9 +3,11 @@ package main
 import (
 	"log"
 
+	"github.com/gofiber/adaptor/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/melvinodsa/build-with-golang/user-service/config"
 	"github.com/melvinodsa/build-with-golang/user-service/routes"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func main() {
@@ -24,6 +26,7 @@ func main() {
 	//then initialize the routes
 	app := fiber.New()
 	routes.InitRoutes(ctx, app)
+	app.Get("/metrics", adaptor.HTTPHandler(promhttp.Handler()))
 	ctx.Logger.Info("app routes initialized")
 
 	//start the server
