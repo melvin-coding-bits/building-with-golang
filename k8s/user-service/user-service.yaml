@@ -51,7 +51,7 @@ kind: Service
 metadata:
   name: user-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: user-service
   ports:
