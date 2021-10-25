@@ -12,6 +12,8 @@ type User struct {
 	Name string
 	//Email of the user
 	Email string
+	//Password of the user
+	Password string
 }
 
 //Role of the user

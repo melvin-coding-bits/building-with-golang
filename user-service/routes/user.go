@@ -58,14 +58,20 @@ func CreateUser(c *fiber.Ctx) error {
 	/*
 	 * We will get the user context
 	 * We will get the user payload to be created
+	 * WE will validate the user payload
 	 * We will create the user in the db
 	 */
 	ctx, ok := c.UserContext().Value(config.AppContextKey{}).(*config.AppContext)
 	if !ok {
 		return c.JSON(dto.Error(errors.New("context not found"), http.StatusInternalServerError))
 	}
+
 	u := &dto.User{}
 	if err := c.BodyParser(u); err != nil {
+		return c.JSON(dto.Error(err, http.StatusBadRequest))
+	}
+
+	if err := u.Validate(); err != nil {
 		return c.JSON(dto.Error(err, http.StatusBadRequest))
 	}
 

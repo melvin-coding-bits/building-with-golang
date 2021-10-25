@@ -32,5 +32,6 @@ func InitRoutes(ctx *config.AppContext, app *fiber.App) {
 	versionedRouter.Get("/user/:userId", GetUserDetails)
 	versionedRouter.Put("/user", CreateUser)
 	versionedRouter.Post("/user", UpdateUser)
+	versionedRouter.Post("/login", Login)
 
 }

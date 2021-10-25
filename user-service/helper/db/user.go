@@ -2,6 +2,9 @@
 package db
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
+
 	"github.com/melvinodsa/build-with-golang/user-service/config"
 	"github.com/melvinodsa/build-with-golang/user-service/models"
 	"gorm.io/gorm"
@@ -11,6 +14,9 @@ import (
 func GetAllUsers(ctx *config.AppContext) ([]models.User, error) {
 	var users []models.User
 	err := ctx.DB.Find(&users).Error
+	for i := range users {
+		users[i].Password = ""
+	}
 	return users, err
 }
 
@@ -18,11 +24,14 @@ func GetAllUsers(ctx *config.AppContext) ([]models.User, error) {
 func GetUserDetails(ctx *config.AppContext, userId uint) (*models.User, error) {
 	user := &models.User{Model: gorm.Model{ID: userId}}
 	err := ctx.DB.First(user).Error
+	user.Password = ""
 	return user, err
 }
 
 //CreateUser creates a new user in db
 func CreateUser(ctx *config.AppContext, user *models.User) error {
+	hashedPass := sha256.Sum256([]byte(user.Password))
+	user.Password = hex.EncodeToString(hashedPass[:])
 	return ctx.DB.Create(user).Error
 }
 
