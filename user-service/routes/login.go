@@ -33,6 +33,7 @@ func Login(c *fiber.Ctx) error {
 	a := &dto.Auth{}
 	if err := c.BodyParser(a); err != nil {
 		payloadParsingError.Inc()
+		ctx.Logger.WithField("parsing", "body").Error(err)
 		return c.JSON(dto.Error(err, http.StatusBadRequest))
 	}
 

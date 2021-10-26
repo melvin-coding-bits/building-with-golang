@@ -77,6 +77,7 @@ func CreateUser(c *fiber.Ctx) error {
 	u := &dto.User{}
 	if err := c.BodyParser(u); err != nil {
 		payloadParsingError.Inc()
+		ctx.Logger.WithField("parsing", "body").Error(err)
 		return c.JSON(dto.Error(err, http.StatusBadRequest))
 	}
 
@@ -106,6 +107,7 @@ func UpdateUser(c *fiber.Ctx) error {
 	u := &dto.User{}
 	if err := c.BodyParser(u); err != nil {
 		payloadParsingError.Inc()
+		ctx.Logger.WithField("parsing", "body").Error(err)
 		return c.JSON(dto.Error(err, http.StatusBadRequest))
 	}
 
