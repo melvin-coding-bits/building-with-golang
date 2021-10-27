@@ -35,6 +35,7 @@ pipeline {
     stage('Pushing to k8s') {
       steps {
         withKubeConfig([credentialsId: "clusterk8sconfig"]) {
+          sh "kubectl version"
           sh 'kubectl rollout restart deployment/user-service-deployment -n dezerv'
         }
       }
