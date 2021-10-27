@@ -27,5 +27,11 @@ pipeline {
         sh "docker rmi $registry"
       }
     }
+    
+    stage('Pushing to k8s') {
+      withKubeConfig([credentialsId: 'k8s']) {
+        sh 'kubectl rollout restart deployment/user-service-deployment -n dezerv'
+      }
+    }
   }    
 }
