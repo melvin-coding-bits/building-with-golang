@@ -2,7 +2,6 @@ pipeline {
   environment {
     registry = "melvinodsa/kube-user-service"
     registryCredential = 'dockerhub'
-    k8Credential = 'k8s'
     dockerImage = ''
   }
   agent {
@@ -35,8 +34,8 @@ pipeline {
 
     stage('Pushing to k8s') {
       steps {
-        script {
-          kubernetesDeploy(configs: "k8s/user-service/user-service.yaml", kubeconfigId: "mykubeconfig")
+        withKubeConfig([credentialsId: "clusterk8sconfig"]) {
+          sh 'kubectl rollout restart deployment/user-service-deployment -n dezerv'
         }
       }
     }
