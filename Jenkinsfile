@@ -5,7 +5,11 @@ pipeline {
     k8Credential = 'k8s'
     dockerImage = ''
   }
-  agent kubernetes
+  agent {
+    kubernetes {
+      inheritFrom 'mypod'
+    }
+  }
   stages {
     stage('Building image') {
       steps{
