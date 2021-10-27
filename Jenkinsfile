@@ -5,7 +5,7 @@ pipeline {
     k8Credential = 'k8s'
     dockerImage = ''
   }
-  agent any
+  agent {label: 'kubepod'}
   stages {
     stage('Building image') {
       steps{
