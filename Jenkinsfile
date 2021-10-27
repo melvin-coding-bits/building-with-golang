@@ -35,8 +35,8 @@ pipeline {
 
     stage('Pushing to k8s') {
       steps {
-        withKubeConfig([credentialsId: k8Credential]) {
-          sh 'kubectl rollout restart deployment/user-service-deployment -n dezerv'
+        script {
+          kubernetesDeploy(configs: "k8s/user-service/user-service.yaml", kubeconfigId: "mykubeconfig")
         }
       }
     }
