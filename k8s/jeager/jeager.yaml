@@ -1,0 +1,21 @@
+provisionDataStore:
+  cassandra: false
+  elasticsearch: false
+
+storage:
+  type: elasticsearch
+  elasticsearch:
+    scheme: http
+    host: elasticsearch-master.default
+    port: 9200
+    usePassword: false
+
+
+esIndexCleaner:
+  enabled: true
+
+esRollover:
+  enabled: true
+
+esLookback:
+  enabled: true

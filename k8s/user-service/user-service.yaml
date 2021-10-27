@@ -46,6 +46,8 @@ spec:
                 secretKeyRef:
                   name: postgres-secret
                   key: postgres-name
+            - name: JAEGER_AGENT_HOST
+              value: dezerv-tracing-jeager-jaeger-agent.default
 ---
 apiVersion: v1
 kind: Service

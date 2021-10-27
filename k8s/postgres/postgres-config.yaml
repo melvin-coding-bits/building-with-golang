@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: dezerv
+data:
+  postgres-url: db-postgresql-blr1-86846-do-user-6456703-0.b.db.ondigitalocean.com
+  postgres-port: "25060"
