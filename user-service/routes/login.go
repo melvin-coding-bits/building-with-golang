@@ -9,6 +9,7 @@ import (
 	"github.com/melvinodsa/build-with-golang/user-service/crypto_utils"
 	"github.com/melvinodsa/build-with-golang/user-service/dto"
 	"github.com/melvinodsa/build-with-golang/user-service/helper/db"
+	"github.com/opentracing/opentracing-go"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )
@@ -26,10 +27,17 @@ func Login(c *fiber.Ctx) error {
 	 * We will validate the user email and password
 	 * We will generate the token and set as auth token
 	 */
+	tracer := opentracing.GlobalTracer()
+	spanA := tracer.StartSpan("login api")
+	defer spanA.Finish()
+	span := tracer.StartSpan("get user context", opentracing.ChildOf(spanA.Context()))
+	defer span.Finish()
 	ctx, ok := c.UserContext().Value(config.AppContextKey{}).(*config.AppContext)
 	if !ok {
 		return c.JSON(dto.Error(errors.New("context not found"), http.StatusInternalServerError))
 	}
+	spanBP := tracer.StartSpan("body parsing", opentracing.ChildOf(spanA.Context()))
+	defer spanBP.Finish()
 	a := &dto.Auth{}
 	if err := c.BodyParser(a); err != nil {
 		payloadParsingError.Inc()
@@ -37,11 +45,15 @@ func Login(c *fiber.Ctx) error {
 		return c.JSON(dto.Error(err, http.StatusBadRequest))
 	}
 
+	spanCP := tracer.StartSpan("checking password", opentracing.ChildOf(spanA.Context()))
+	defer spanCP.Finish()
 	user, err := db.CheckPassword(ctx, a.Email, a.Password)
 	if err != nil {
 		return c.JSON(dto.Error(err, http.StatusForbidden))
 	}
 
+	spanGT := tracer.StartSpan("generating token", opentracing.ChildOf(spanA.Context()))
+	defer spanGT.Finish()
 	token, err := crypto_utils.GenerateToken(32)
 	if err != nil {
 		return c.JSON(dto.Error(err, http.StatusInternalServerError))
