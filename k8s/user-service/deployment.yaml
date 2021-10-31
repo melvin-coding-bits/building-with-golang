@@ -47,4 +47,4 @@ spec:
                   name: postgres-secret
                   key: postgres-name
             - name: JAEGER_AGENT_HOST
-              value: dezerv-tracing-jeager-jaeger-agent.default
+              value: dezerv-tracing-jaeger-agent.default

@@ -1,0 +1,38 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: elastic
+  namespace: logging-es
+spec:
+  version: 7.15.1
+  nodeSets:
+  - name: master-nodes
+    count: 1
+    config:
+      node.roles: ["master"]
+      node.store.allow_mmap: false
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
+        storageClassName: do-block-storage
+  - name: data-nodes
+    count: 1
+    config:
+      node.roles: ["data"]
+      node.store.allow_mmap: false
+    volumeClaimTemplates:
+    - metadata:
+        name: elasticsearch-data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
+        storageClassName: do-block-storage
